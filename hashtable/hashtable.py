@@ -21,7 +21,8 @@ class HashTable:
     """
 
     def __init__(self, capacity):
-        # Your code here
+        self.capacity = MIN_CAPACITY
+        self.hash = [None] * capacity
 
 
     def get_num_slots(self):
@@ -34,7 +35,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        return self.capacity
 
 
     def get_load_factor(self):
@@ -53,7 +54,10 @@ class HashTable:
         Implement this, and/or DJB2.
         """
 
-        # Your code here
+        hash = 5381 # crazy dfb2 numbers
+        for c in key:
+            hash = ((hash << 5) + hash) + ord(c)
+        return hash
 
 
     def djb2(self, key):
@@ -70,8 +74,8 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
-        return self.djb2(key) % self.capacity
+        return self.fnv1(key) % self.capacity
+        # return self.djb2(key) % self.capacity
 
     def put(self, key, value):
         """
@@ -81,7 +85,9 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        index = self.hash_index(key)
+
+        self.hash[index] = HashTableEntry(key, value)
 
 
     def delete(self, key):
@@ -92,7 +98,9 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        index = self.hash_index(key)
+
+        self.hash[index] = None
 
 
     def get(self, key):
@@ -103,7 +111,10 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        index = self.hash_index(key)
+        hashitem = self.hash[index]
+
+        return hashitem.value
 
 
     def resize(self, new_capacity):
