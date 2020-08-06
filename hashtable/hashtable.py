@@ -3,9 +3,11 @@ class HashTableEntry:
     Linked List hash table key/value pair
     """
     def __init__(self, key, value):
-        self.key = key
-        self.value = value
-        self.next = None
+        if capacity < MIN_CAPACITY:
+            capacity = MIN_CAPACITY
+        self.capacity = capacity
+        self.count = 0
+        self.array = [None] * capacity
 
 
 # Hash table can't have fewer than this many slots
@@ -85,9 +87,11 @@ class HashTable:
 
         Implement this.
         """
-        index = self.hash_index(key)
-
-        self.hash[index] = HashTableEntry(key, value)
+        self.count += 1
+        load_factor = self.count / self.capacity
+        if load_factor > 0.8:
+            print("need to resize")
+            self.resize(self.capacity * 2)
 
 
     def delete(self, key):
@@ -124,7 +128,17 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        self.print_me("RESIZE BEFORE W/ CAPACITY", self.capacity)
+        new = [None] * new_capacity
+
+        counter = 0
+        for item in self.array:
+            new[counter] = item
+            counter += 1
+
+        self.array = new
+
+        self.print_me("RESIZE AFTER W/ NEW_CAPACITY", new_capacity)
 
 
 

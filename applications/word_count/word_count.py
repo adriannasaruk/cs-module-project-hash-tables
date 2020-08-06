@@ -1,5 +1,19 @@
 def word_count(s):
-    # Your code here
+    cache = {}
+    new_string = s.lower()
+
+    ignore = '" : ; , . - + = / \ | [ ] { } ( ) * ^ &'.split(" ")
+    for char in ignore:
+	    new_string = new_string.replace(char, "")
+
+    for word in new_string.split():
+	    if word == "":
+		    continue
+	    if word not in cache:
+		    cache[word] = 1
+	    else:
+		    cache[word] += 1
+    return cache
 
 
 
